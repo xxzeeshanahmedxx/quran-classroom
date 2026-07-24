@@ -3,5 +3,5 @@ pages_build_output_dir = "dist"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "quran-classroom-dev"
-database_id = "88d7af23-d201-4627-b6d1-110a7a7b1232"
+database_name = "quran-classroom-db"
+database_id = "6450634e-7077-4a96-adc2-6f6f3edde3ea"

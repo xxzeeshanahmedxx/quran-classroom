@@ -6,7 +6,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "cf:deploy": "astro build && wrangler pages deploy dist --project-name quran-classroom",
+    "cf:deploy": "astro build && powershell -Command \"Remove-Item -Force 'dist/server/wrangler.json' -ErrorAction SilentlyContinue; Remove-Item -Force '.wrangler/deploy/config.json' -ErrorAction SilentlyContinue\" && wrangler pages deploy dist --project-name quran-classroom --commit-dirty=true",
     "db:migrate": "wrangler d1 execute quran-classroom-db --file=db/schema.sql",
     "db:seed": "wrangler d1 execute quran-classroom-db --file=db/seed.sql"
   },
