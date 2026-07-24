@@ -6,10 +6,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "cf:deploy": "astro build && wrangler pages deploy",
+    "cf:deploy": "astro build && wrangler pages deploy dist --project-name quran-classroom",
     "db:migrate": "wrangler d1 execute quran-classroom-db --file=db/schema.sql",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "db:seed": "wrangler d1 execute quran-classroom-db --file=db/seed.sql"
   },
   "dependencies": {
     "astro": "^7.0.0",
