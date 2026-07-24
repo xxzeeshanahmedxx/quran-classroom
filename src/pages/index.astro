@@ -4,12 +4,116 @@ import HeroActions from '../components/HeroActions';
 ---
 
 <BaseLayout title="Home">
-  <div class="flex flex-col items-center py-24 text-center">
-    <h1 class="display-xl text-ink">Live Quran Academy</h1>
-    <p class="mt-4 max-w-md body-md text-body">
-      Live online Quran classes for kids and adults. Small groups,
-      experienced teachers, personal attention — all at livequran.academy.
+  <!-- Hero -->
+  <section class="flex flex-col items-center py-16 text-center sm:py-24">
+    <h1 class="display-xl text-ink">Quran Classes That Fit Your Family</h1>
+    <p class="mt-4 max-w-lg body-md text-body">
+      Join 100+ students learning with <strong class="text-ink">Asif Zubair</strong>, a certified Quran teacher with over 10 years of experience. Live video classes that fit around school, work, and life.
     </p>
     <HeroActions client:load />
-  </div>
+  </section>
+
+  <!-- Features -->
+  <section class="mt-16 sm:mt-24">
+    <h2 class="mb-10 text-center display-md text-ink">Why Families Choose Us</h2>
+    <div class="grid gap-4 sm:grid-cols-3">
+      <div class="rounded-xl bg-surface-card p-6 hover-card">
+        <h3 class="title-sm text-ink">Asif Zubair</h3>
+        <p class="mt-1 caption text-muted-foreground">10+ years teaching</p>
+        <p class="mt-2 body-sm text-body">
+          Certified Quran teacher with over a decade of experience. Background-checked, patient, and passionate about Quran education for children and adults.
+        </p>
+      </div>
+      <div class="rounded-xl bg-surface-card p-6 hover-card">
+        <h3 class="title-sm text-ink">Flexible Scheduling</h3>
+        <p class="mt-2 body-sm text-body">
+          Pick time slots that work for your family. Morning, afternoon, or evening — we work around your routine. Easy to reschedule.
+        </p>
+      </div>
+      <div class="rounded-xl bg-surface-card p-6 hover-card">
+        <h3 class="title-sm text-ink">Small Groups</h3>
+        <p class="mt-2 body-sm text-body">
+          Maximum 3 students per class. Every child gets individual attention. Better than crowded classrooms — real progress, real connection.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="mt-16 sm:mt-24">
+    <h2 class="mb-10 text-center display-md text-ink">How It Works</h2>
+    <div class="mx-auto max-w-2xl">
+      <div class="flex flex-col gap-4">
+        <div class="flex items-start gap-5 rounded-xl bg-surface-card p-5 hover-card">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary title-sm">1</span>
+          <div>
+            <h3 class="title-sm text-ink">Sign Up</h3>
+            <p class="body-sm text-body">Choose a 4-digit PIN and you're in. No long forms, no paperwork.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-5 rounded-xl bg-surface-card p-5 hover-card">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary title-sm">2</span>
+          <div>
+            <h3 class="title-sm text-ink">Choose Your Schedule</h3>
+            <p class="body-sm text-body">Pick available time slots that work for you. Morning or evening — your choice.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-5 rounded-xl bg-surface-card p-5 hover-card">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary title-sm">3</span>
+          <div>
+            <h3 class="title-sm text-ink">Start Learning</h3>
+            <p class="body-sm text-body">Join live 30-minute video classes from home. All you need is a phone or laptop.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="mt-16 sm:mt-24">
+    <h2 class="mb-10 text-center display-md text-ink">Frequently Asked Questions</h2>
+    <div class="mx-auto max-w-2xl">
+      <div class="flex flex-col gap-2">
+        <details class="group rounded-xl bg-surface-card p-4 [&[open]_svg]:rotate-180">
+          <summary class="flex cursor-pointer items-center justify-between title-sm text-ink">
+            Who teaches the classes?
+            <svg class="shrink-0 transition-transform duration-200" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <p class="mt-2 body-sm text-body">All classes are taught by <strong class="text-ink">Asif Zubair</strong> — a certified Quran teacher with over 10 years of experience and 100+ students taught. He specializes in teaching children and beginners.</p>
+        </details>
+        <details class="group rounded-xl bg-surface-card p-4 [&[open]_svg]:rotate-180">
+          <summary class="flex cursor-pointer items-center justify-between title-sm text-ink">
+            What ages do you teach?
+            <svg class="shrink-0 transition-transform duration-200" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <p class="mt-2 body-sm text-body">We teach children ages 5 and up, as well as adults of all ages. Students are grouped by skill level so everyone learns at the right pace.</p>
+        </details>
+        <details class="group rounded-xl bg-surface-card p-4 [&[open]_svg]:rotate-180">
+          <summary class="flex cursor-pointer items-center justify-between title-sm text-ink">
+            What do I need to start?
+            <svg class="shrink-0 transition-transform duration-200" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <p class="mt-2 body-sm text-body">Just a phone, tablet, or laptop with internet access. Classes run right in your browser — no software to install. A quiet corner helps, but any space works.</p>
+        </details>
+        <details class="group rounded-xl bg-surface-card p-4 [&[open]_svg]:rotate-180">
+          <summary class="flex cursor-pointer items-center justify-between title-sm text-ink">
+            How much does it cost?
+            <svg class="shrink-0 transition-transform duration-200" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <p class="mt-2 body-sm text-body">Contact us for current pricing. We offer flexible payment options and believe Quran education should be accessible to every family.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="mt-16 sm:mt-24 mb-8 text-center">
+    <div class="rounded-xl bg-primary px-8 py-16 sm:px-16">
+      <h2 class="display-md text-on-primary">Ready to Start?</h2>
+      <p class="mt-3 body-md text-on-dark-soft max-w-md mx-auto">Join 100+ families learning Quran online with Asif Zubair. Your first class is just a click away.</p>
+      <a href="/learn/login"
+        class="mt-6 inline-block h-12 rounded-lg bg-canvas px-8 text-sm font-semibold text-ink leading-12 hover:bg-surface-soft hover-btn"
+      >Join Now</a>
+    </div>
+  </section>
 </BaseLayout>
