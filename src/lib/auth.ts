@@ -50,7 +50,7 @@ export function createSession(context: any, user: SessionUser): void {
     maxAge: SESSION_DURATION,
     httpOnly: true,
     sameSite: 'lax',
-    secure: false,
+    secure: context.url?.protocol === 'https:',
   });
 }
 
