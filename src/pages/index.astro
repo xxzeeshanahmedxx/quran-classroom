@@ -1,48 +1,126 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroActions from '../components/HeroActions';
+import { CircleCheck, Clock, BookOpen, ChevronDown, Check } from 'lucide-astro';
 ---
 
-<BaseLayout title="Home">
-  <!-- Hero -->
-  <section class="flex flex-col items-center py-16 text-center sm:py-24">
-    <h1 class="display-xl text-ink">Quran Classes That Fit Your Family</h1>
+<BaseLayout title="Home" wide>
+  <!-- 1. Hero -->
+  <section class="flex flex-col items-center py-24 text-center sm:py-32">
+    <h1 class="display-xl text-ink">Give Your Child the Gift of Quran</h1>
     <p class="mt-4 max-w-lg body-md text-body">
-      Join 100+ students learning with <strong class="text-ink">Asif Zubair</strong>, a certified Quran teacher with over 10 years of experience. Live video classes that fit around school, work, and life.
+      Choose Nazra or Hifz. Plans from <strong class="text-ink">4,699 PKR/month</strong>.
+      Try 3 days free — no credit card needed. Learn proper tajweed from home with
+      <strong class="text-ink">Asif Zubair</strong> — 10+ years, 100+ students.
     </p>
     <HeroActions client:load />
+    <div class="mt-10 flex flex-wrap justify-center gap-x-10 gap-y-3">
+      <div class="text-center"><div class="display-lg text-ink">10+</div><div class="caption text-muted-foreground">Years</div></div>
+      <div class="text-center"><div class="display-lg text-ink">100+</div><div class="caption text-muted-foreground">Students</div></div>
+      <div class="text-center"><div class="display-lg text-ink">4,699</div><div class="caption text-muted-foreground">PKR/mo from</div></div>
+      <div class="text-center"><div class="display-lg text-ink">3</div><div class="caption text-muted-foreground">Day Free Trial</div></div>
+    </div>
   </section>
 
-  <!-- Features -->
-  <section class="mt-16 sm:mt-24">
-    <h2 class="mb-10 text-center display-md text-ink">Why Families Choose Us</h2>
-    <div class="grid gap-4 sm:grid-cols-3">
-      <div class="rounded-xl bg-surface-card p-6 hover-card">
-        <h3 class="title-sm text-ink">Asif Zubair</h3>
-        <p class="mt-1 caption text-muted-foreground">10+ years teaching</p>
-        <p class="mt-2 body-sm text-body">
-          Certified Quran teacher with over a decade of experience. Background-checked, patient, and passionate about Quran education for children and adults.
-        </p>
-      </div>
-      <div class="rounded-xl bg-surface-card p-6 hover-card">
-        <h3 class="title-sm text-ink">Flexible Scheduling</h3>
-        <p class="mt-2 body-sm text-body">
-          Pick time slots that work for your family. Morning, afternoon, or evening — we work around your routine. Easy to reschedule.
-        </p>
-      </div>
-      <div class="rounded-xl bg-surface-card p-6 hover-card">
-        <h3 class="title-sm text-ink">Small Groups</h3>
-        <p class="mt-2 body-sm text-body">
-          Maximum 3 students per class. Every child gets individual attention. Better than crowded classrooms — real progress, real connection.
-        </p>
+  <!-- 2. Teacher Spotlight -->
+  <section class="bg-surface-card py-16 sm:py-20">
+    <div class="mx-auto max-w-4xl px-4">
+      <div class="flex items-start gap-6 sm:items-center">
+        <div class="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary text-2xl font-semibold">AZ</div>
+        <div>
+          <h2 class="title-sm text-ink">Your Child Learns Directly with Asif Zubair</h2>
+          <p class="mt-2 body-sm text-body max-w-2xl">
+            Certified Quran teacher with over 10 years of experience teaching children and adults.
+            Background-checked, patient, and dedicated to proper tajweed. Every class is taught by
+            Asif personally — not an assistant, not a substitute.
+          </p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- How It Works -->
-  <section class="mt-16 sm:mt-24">
-    <h2 class="mb-10 text-center display-md text-ink">How It Works</h2>
-    <div class="mx-auto max-w-2xl">
+  <!-- 3. Curriculum + Pricing -->
+  <section class="py-16 sm:py-24">
+    <div class="mx-auto max-w-4xl px-4">
+      <h2 class="mb-10 text-center display-md text-ink">Choose Your Path</h2>
+      <div class="grid gap-6 sm:grid-cols-2">
+        <!-- Nazra card -->
+        <div class="rounded-xl bg-surface-card p-8 text-center">
+          <span class="offer-badge">Save 33%</span>
+          <div class="mt-4 flex items-baseline justify-center gap-2">
+            <span class="price-old">7,000 PKR</span>
+            <span class="display-md text-ink">4,699 PKR</span>
+          </div>
+          <p class="caption text-muted-foreground">/mo &middot; 3 days free</p>
+          <p class="mt-3 body-sm text-body">Read Full Quran with proper tajweed from beginning to end. Build confidence and fluency in recitation.</p>
+          <a href="/learn/login" class="mt-5 inline-block h-10 rounded-lg bg-primary px-6 text-sm font-semibold text-on-primary leading-10 hover:bg-primary-active hover-btn">Claim Free Trial</a>
+        </div>
+        <!-- Hifz card -->
+        <div class="rounded-xl bg-surface-card p-8 text-center">
+          <span class="offer-badge">Save 25%</span>
+          <div class="mt-4 flex items-baseline justify-center gap-2">
+            <span class="price-old">10,000 PKR</span>
+            <span class="display-md text-ink">7,499 PKR</span>
+          </div>
+          <p class="caption text-muted-foreground">/mo &middot; 3 days free</p>
+          <p class="mt-3 body-sm text-body">Memorize Juz 30 with correct pronunciation and fluency. Perfect for starting your child's memorization journey.</p>
+          <a href="/learn/login" class="mt-5 inline-block h-10 rounded-lg bg-primary px-6 text-sm font-semibold text-on-primary leading-10 hover:bg-primary-active hover-btn">Claim Free Trial</a>
+        </div>
+      </div>
+      <!-- Complementary chips -->
+      <p class="mt-8 text-center caption text-muted-foreground">Both include complementary (no extra cost):</p>
+      <div class="mt-3 flex flex-wrap justify-center gap-2">
+        <span class="rounded-full bg-surface-card px-4 py-1.5 caption text-ink">Noorani Qaida</span>
+        <span class="rounded-full bg-surface-card px-4 py-1.5 caption text-ink">Complete Salah</span>
+        <span class="rounded-full bg-surface-card px-4 py-1.5 caption text-ink">6 Kalimas</span>
+        <span class="rounded-full bg-surface-card px-4 py-1.5 caption text-ink">Daily Duas</span>
+        <span class="rounded-full bg-surface-card px-4 py-1.5 caption text-ink">Basic Islamic Knowledge</span>
+      </div>
+      <!-- Feature checklist -->
+      <div class="mt-8 flex flex-wrap justify-center gap-x-8 gap-y-2 body-sm text-body">
+        <span class="flex items-center gap-1.5"><Check size={14} class="text-success" /> 30-min live classes</span>
+        <span class="flex items-center gap-1.5"><Check size={14} class="text-success" /> Tajweed focus</span>
+        <span class="flex items-center gap-1.5"><Check size={14} class="text-success" /> Max 3 per class</span>
+        <span class="flex items-center gap-1.5"><Check size={14} class="text-success" /> Learn from home</span>
+        <span class="flex items-center gap-1.5"><Check size={14} class="text-success" /> Cancel anytime</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Features -->
+  <section class="bg-surface-card py-16 sm:py-20">
+    <div class="mx-auto max-w-4xl px-4">
+      <h2 class="mb-10 text-center display-md text-ink">Why Families Choose Us</h2>
+      <div class="grid gap-4 sm:grid-cols-3">
+        <div class="rounded-xl bg-canvas p-6 hover-card">
+          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-on-primary">
+            <CircleCheck size={18} strokeWidth={2.5} />
+          </div>
+          <h3 class="mt-3 title-sm text-ink">Qualified &amp; Trusted</h3>
+          <p class="mt-1 body-sm text-body">10+ years experience, background-checked, certified. Your child is in safe hands.</p>
+        </div>
+        <div class="rounded-xl bg-canvas p-6 hover-card">
+          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-on-primary">
+            <Clock size={18} strokeWidth={2} />
+          </div>
+          <h3 class="mt-3 title-sm text-ink">Fits Your Schedule</h3>
+          <p class="mt-1 body-sm text-body">Pick time slots around school and work. Morning, afternoon, or evening — your choice.</p>
+        </div>
+        <div class="rounded-xl bg-canvas p-6 hover-card">
+          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-on-primary">
+            <BookOpen size={18} strokeWidth={2} />
+          </div>
+          <h3 class="mt-3 title-sm text-ink">Complete Curriculum</h3>
+          <p class="mt-1 body-sm text-body">Nazra or Hifz + Noorani Qaida, Salah, 6 Kalimas, Duas — all in one place.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. How It Works -->
+  <section class="py-16 sm:py-24">
+    <div class="mx-auto max-w-2xl px-4">
+      <h2 class="mb-10 text-center display-md text-ink">How It Works</h2>
       <div class="flex flex-col gap-4">
         <div class="flex items-start gap-5 rounded-xl bg-surface-card p-5 hover-card">
           <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary title-sm">1</span>
@@ -62,58 +140,69 @@ import HeroActions from '../components/HeroActions';
           <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary title-sm">3</span>
           <div>
             <h3 class="title-sm text-ink">Start Learning</h3>
-            <p class="body-sm text-body">Join live 30-minute video classes from home. All you need is a phone or laptop.</p>
+            <p class="body-sm text-body">Join live 30-minute video classes from home with Asif Zubair. All you need is a phone or laptop.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- FAQ -->
-  <section class="mt-16 sm:mt-24">
-    <h2 class="mb-10 text-center display-md text-ink">Frequently Asked Questions</h2>
-    <div class="mx-auto max-w-2xl">
+  <!-- 6. FAQ -->
+  <section class="bg-surface-card py-16 sm:py-20">
+    <div class="mx-auto max-w-2xl px-4">
+      <h2 class="mb-10 text-center display-md text-ink">Frequently Asked Questions</h2>
       <div class="flex flex-col gap-2">
-        <details class="group rounded-xl bg-surface-card p-4 [&[open]_svg]:rotate-180">
+        <details class="group rounded-xl bg-canvas p-4 [&[open]_svg]:rotate-180">
+          <summary class="flex cursor-pointer items-center justify-between title-sm text-ink">
+            What will my child learn?
+            <ChevronDown size={16} strokeWidth={2} class="shrink-0 transition-transform duration-200" />
+          </summary>
+          <p class="mt-2 body-sm text-body">
+            You choose between <strong class="text-ink">Nazra (Full Quran)</strong> — reading the entire Quran with proper tajweed, or <strong class="text-ink">Hifz (30th Para)</strong> — memorizing Juz 30. Both include complementary subjects at no extra cost: Noorani Qaida, Complete Salah, 6 Kalimas, Daily Duas, and Basic Islamic Knowledge.
+          </p>
+        </details>
+        <details class="group rounded-xl bg-canvas p-4 [&[open]_svg]:rotate-180">
           <summary class="flex cursor-pointer items-center justify-between title-sm text-ink">
             Who teaches the classes?
-            <svg class="shrink-0 transition-transform duration-200" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            <ChevronDown size={16} strokeWidth={2} class="shrink-0 transition-transform duration-200" />
           </summary>
           <p class="mt-2 body-sm text-body">All classes are taught by <strong class="text-ink">Asif Zubair</strong> — a certified Quran teacher with over 10 years of experience and 100+ students taught. He specializes in teaching children and beginners.</p>
         </details>
-        <details class="group rounded-xl bg-surface-card p-4 [&[open]_svg]:rotate-180">
+        <details class="group rounded-xl bg-canvas p-4 [&[open]_svg]:rotate-180">
           <summary class="flex cursor-pointer items-center justify-between title-sm text-ink">
             What ages do you teach?
-            <svg class="shrink-0 transition-transform duration-200" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            <ChevronDown size={16} strokeWidth={2} class="shrink-0 transition-transform duration-200" />
           </summary>
-          <p class="mt-2 body-sm text-body">We teach children ages 5 and up, as well as adults of all ages. Students are grouped by skill level so everyone learns at the right pace.</p>
+          <p class="mt-2 body-sm text-body">Children ages 5 and up, as well as adults. Students are grouped by skill level so everyone learns at the right pace.</p>
         </details>
-        <details class="group rounded-xl bg-surface-card p-4 [&[open]_svg]:rotate-180">
+        <details class="group rounded-xl bg-canvas p-4 [&[open]_svg]:rotate-180">
           <summary class="flex cursor-pointer items-center justify-between title-sm text-ink">
             What do I need to start?
-            <svg class="shrink-0 transition-transform duration-200" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            <ChevronDown size={16} strokeWidth={2} class="shrink-0 transition-transform duration-200" />
           </summary>
-          <p class="mt-2 body-sm text-body">Just a phone, tablet, or laptop with internet access. Classes run right in your browser — no software to install. A quiet corner helps, but any space works.</p>
+          <p class="mt-2 body-sm text-body">Just a phone, tablet, or laptop with internet. Classes run in your browser — no software to install.</p>
         </details>
-        <details class="group rounded-xl bg-surface-card p-4 [&[open]_svg]:rotate-180">
+        <details class="group rounded-xl bg-canvas p-4 [&[open]_svg]:rotate-180">
           <summary class="flex cursor-pointer items-center justify-between title-sm text-ink">
             How much does it cost?
-            <svg class="shrink-0 transition-transform duration-200" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            <ChevronDown size={16} strokeWidth={2} class="shrink-0 transition-transform duration-200" />
           </summary>
-          <p class="mt-2 body-sm text-body">Contact us for current pricing. We offer flexible payment options and believe Quran education should be accessible to every family.</p>
+          <p class="mt-2 body-sm text-body">
+            <strong class="text-ink">Nazra (Full Quran):</strong> <span class="price-old">7,000 PKR</span> → 4,699 PKR/month.<br />
+            <strong class="text-ink">Hifz (30th Para):</strong> <span class="price-old">10,000 PKR</span> → 7,499 PKR/month.<br />
+            Both include a <strong class="text-ink">3-day free trial</strong> — no commitment, no credit card. Contact us to enroll.
+          </p>
         </details>
       </div>
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="mt-16 sm:mt-24 mb-8 text-center">
-    <div class="rounded-xl bg-primary px-8 py-16 sm:px-16">
-      <h2 class="display-md text-on-primary">Ready to Start?</h2>
-      <p class="mt-3 body-md text-on-dark-soft max-w-md mx-auto">Join 100+ families learning Quran online with Asif Zubair. Your first class is just a click away.</p>
-      <a href="/learn/login"
-        class="mt-6 inline-block h-12 rounded-lg bg-canvas px-8 text-sm font-semibold text-ink leading-12 hover:bg-surface-soft hover-btn"
-      >Join Now</a>
+  <!-- 7. Final CTA -->
+  <section class="bg-primary py-16 sm:py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center">
+      <h2 class="display-md text-on-primary">Start Your 3-Day Free Trial</h2>
+      <p class="mt-3 body-md text-on-dark-soft max-w-md mx-auto">Give your child the Quran education they deserve. No credit card. Cancel anytime.</p>
+      <a href="/learn/login" class="mt-6 inline-block h-12 rounded-lg bg-canvas px-8 text-sm font-semibold text-ink leading-12 hover:bg-surface-soft hover-btn">Claim Free Trial</a>
     </div>
   </section>
 </BaseLayout>

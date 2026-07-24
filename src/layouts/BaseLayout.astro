@@ -4,9 +4,10 @@ import { Toaster } from '../components/ui/sonner';
 
 export interface Props {
   title: string;
+  wide?: boolean;
 }
 
-const { title } = Astro.props;
+const { title, wide = false } = Astro.props;
 const user = Astro.locals.user;
 ---
 
@@ -39,9 +40,13 @@ const user = Astro.locals.user;
       </div>
     </header>
     <main class="mx-auto w-full max-w-4xl px-4 py-6 sm:py-10">
-      <div class="page-card rounded-xl p-6">
+      {wide ? (
         <slot />
-      </div>
+      ) : (
+        <div class="page-card rounded-xl p-6">
+          <slot />
+        </div>
+      )}
     </main>
     <Toaster client:load />
   </body>

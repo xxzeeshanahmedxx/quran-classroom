@@ -236,3 +236,20 @@ tr.hover-row:hover {
 a, button, [role="button"], label {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+.price-old {
+  text-decoration: line-through;
+  color: #ef4444;
+  font-size: 0.9em;
+}
+.offer-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

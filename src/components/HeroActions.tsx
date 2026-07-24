@@ -18,7 +18,7 @@ export default function HeroActions() {
             href="/learn/login"
             class="block px-6 py-[10px] text-sm font-semibold text-on-primary text-center whitespace-nowrap"
           >
-            Start Learning with Asif Zubair
+            Claim Your 3-Day Free Trial
           </a>
         </BorderGlow>
         <Magnet padding={80} magnetStrength={3}>
