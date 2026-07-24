@@ -20,10 +20,9 @@ interface Student {
 interface AssignDialogProps {
   slotId: number
   students: Student[]
-  currentCount: number
 }
 
-export default function AssignDialog({ slotId, students, currentCount }: AssignDialogProps) {
+export default function AssignDialog({ slotId, students }: AssignDialogProps) {
   const [open, setOpen] = useState(false)
   const [selected, setSelected] = useState<number[]>([])
   const [saving, setSaving] = useState(false)

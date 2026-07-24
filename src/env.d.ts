@@ -4,7 +4,7 @@
 declare namespace App {
   interface Locals {
     user: {
-      type: 'teacher' | 'student' | 'admin';
+      type: 'teacher' | 'student';
       id: number;
       name: string;
       teacherId?: number;

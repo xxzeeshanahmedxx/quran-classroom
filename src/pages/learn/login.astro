@@ -25,7 +25,7 @@ const error = Astro.url.searchParams.get('error');
 <AuthLayout title="Student Login">
   <ClickSparkForm client:load>
     <form method="POST" action="/learn/login" class="flex flex-col items-center gap-4">
-      <PinPad label="Log In" action="/learn/login" error={error === 'invalid' ? 'Wrong PIN. Ask your teacher.' : undefined} />
+      <PinPad label="Log In" action="/learn/login" error={error === 'invalid' ? 'Wrong PIN. Ask your teacher.' : error === 'session' ? 'Session expired. Log in again.' : undefined} />
     </form>
   </ClickSparkForm>
 </AuthLayout>

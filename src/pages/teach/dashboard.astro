@@ -3,42 +3,35 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getDb, getStudentsByTeacher, getSlotsByTeacherDate } from '../../lib/db';
 import AddSlotDialog from '../../components/AddSlotDialog';
 import SlotCards from '../../components/SlotCards';
+import { todayPK, fmtDatePK } from '../../lib/utils';
 
-if (!Astro.locals.user || (Astro.locals.user.type !== 'teacher' && Astro.locals.user.type !== 'admin')) {
+if (!Astro.locals.user) {
+  return Astro.redirect('/teach/login?error=session');
+}
+if (Astro.locals.user.type !== 'teacher') {
   return Astro.redirect('/teach/login');
 }
 
-const db = getDb(Astro);
-const now = new Date();
-const todayStr = now.toISOString().slice(0, 10);
-const teacherId = Astro.locals.user.id;
+const db = await getDb(Astro);
+const todayStr = todayPK();
+const teacherId = 1;
 
 const [slots, students] = await Promise.all([
   getSlotsByTeacherDate(db, teacherId, todayStr),
   getStudentsByTeacher(db, teacherId),
 ]);
-
-function fmtDate(iso: string): string {
-  const d = new Date(iso + 'T00:00:00');
-  const dd = d.getDate().toString().padStart(2, '0');
-  const mm = (d.getMonth() + 1).toString().padStart(2, '0');
-  const yyyy = d.getFullYear();
-  return `${dd}-${mm}-${yyyy}`;
-}
 ---
 
 <BaseLayout title="Dashboard">
   <div class="mb-8 flex items-center justify-between">
     <div>
       <h2 class="title-lg text-ink">Today's Schedule</h2>
-      <p class="caption text-muted-foreground">{fmtDate(todayStr)}</p>
+      <p class="caption text-muted-foreground">{fmtDatePK(todayStr)}</p>
     </div>
     <div class="flex gap-3">
       <a href="/teach/students"
         class="h-10 rounded-lg border border-hairline bg-canvas px-5 text-sm font-semibold text-ink leading-10 hover:bg-surface-soft hover-btn"
-      >
-        Manage Students
-      </a>
+      >Manage Students</a>
       <AddSlotDialog client:load />
     </div>
   </div>

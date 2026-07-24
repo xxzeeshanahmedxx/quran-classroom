@@ -2,14 +2,15 @@ CREATE TABLE IF NOT EXISTS teachers (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
   email TEXT NOT NULL DEFAULT '',
-  pin TEXT NOT NULL
+  pin TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS students (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
-  title TEXT NOT NULL DEFAULT 'Nazra',
-  pin TEXT NOT NULL,
+  title TEXT NOT NULL DEFAULT 'Nazra' CHECK (title IN ('Nazra', 'Hifz', 'Tajweed')),
+  gender TEXT NOT NULL DEFAULT 'male' CHECK (gender IN ('male', 'female')),
+  pin TEXT NOT NULL UNIQUE,
   teacher_id INTEGER NOT NULL,
   FOREIGN KEY (teacher_id) REFERENCES teachers(id)
 );

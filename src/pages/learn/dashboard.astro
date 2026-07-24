@@ -1,19 +1,26 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getDb, getTeacherById, getSlotsByTeacherDate } from '../../lib/db';
+import { getDb, getTeacherById, getSlotsByTeacherDate, getStudentById } from '../../lib/db';
+import { todayPK } from '../../lib/utils';
 
-if (!Astro.locals.user || Astro.locals.user.type !== 'student') {
+if (!Astro.locals.user) {
+  return Astro.redirect('/learn/login?error=session');
+}
+if (Astro.locals.user.type !== 'student') {
   return Astro.redirect('/learn/login');
 }
 
-const db = getDb(Astro);
-const { id: studentId, name, teacherId = 1 } = Astro.locals.user;
-const now = new Date();
-const todayStr = now.toISOString().slice(0, 10);
+const db = await getDb(Astro);
+const { id: studentId } = Astro.locals.user;
+const todayStr = todayPK();
+
+// Read fresh name from DB (in case admin renamed student)
+const studentRecord = await getStudentById(db, studentId);
+const name = studentRecord?.name || 'Student';
 
 const [slots, teacher] = await Promise.all([
-  getSlotsByTeacherDate(db, teacherId, todayStr),
-  getTeacherById(db, teacherId),
+  getSlotsByTeacherDate(db, 1, todayStr),
+  getTeacherById(db, 1),
 ]);
 
 function fmt12h(time24: string): string {
@@ -23,13 +30,24 @@ function fmt12h(time24: string): string {
   return `${h12}:${m.toString().padStart(2, '0')} ${period}`;
 }
 
-const mySlot = slots.find(slot => {
-  const ids: number[] = JSON.parse(slot.student_ids);
-  return ids.includes(studentId);
-});
+const mySlots = slots
+  .filter(slot => {
+    const ids: number[] = JSON.parse(slot.student_ids);
+    return ids.includes(studentId);
+  })
+  .sort((a, b) => a.time.localeCompare(b.time));
+
+// Show currently live slot, or next upcoming, or most recent ended
+const now = new Date();
+const mySlot = mySlots.find(slot => {
+  const [h, m] = slot.time.split(':').map(Number);
+  const slotEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m).getTime() + 30 * 60 * 1000;
+  return slotEnd >= now.getTime();
+}) || mySlots[mySlots.length - 1];
 
 const isNow = mySlot ? (() => {
   const [h, m] = mySlot.time.split(':').map(Number);
+  const now = new Date();
   const slotStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m);
   const slotEnd = new Date(slotStart.getTime() + 30 * 60 * 1000);
   return now >= slotStart && now <= slotEnd;
@@ -54,6 +72,11 @@ const isNow = mySlot ? (() => {
           >Join Class</a>
         ) : (
           <span class="body-sm text-muted-foreground">Come back at your scheduled time</span>
+        )}
+        {teacher?.email && (
+          <p class="body-sm text-muted-foreground">
+            Teacher email: <a href={`mailto:${teacher.email}`} class="font-semibold text-ink hover:text-primary">{teacher.email}</a>
+          </p>
         )}
       </div>
     ) : (

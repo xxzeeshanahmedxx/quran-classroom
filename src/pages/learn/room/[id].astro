@@ -2,15 +2,38 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getDb } from '../../../lib/db';
 
-if (!Astro.locals.user || Astro.locals.user.type !== 'student') {
+if (!Astro.locals.user) {
+  return Astro.redirect('/learn/login?error=session');
+}
+if (Astro.locals.user.type !== 'student') {
   return Astro.redirect('/learn/login');
 }
 
 const { id } = Astro.params;
-const db = getDb(Astro);
+const db = await getDb(Astro);
 const slot = await db.prepare('SELECT * FROM slots WHERE id = ?').bind(Number(id)).first<any>();
 
-if (!slot || !slot.room_name) return Astro.redirect('/learn/dashboard');
+if (!slot) return Astro.redirect('/learn/dashboard');
+
+// Ownership check: student must be assigned to this slot
+const studentIds: number[] = JSON.parse(slot.student_ids || '[]');
+if (!studentIds.includes(Astro.locals.user.id)) {
+  return Astro.redirect('/learn/dashboard');
+}
+
+// Time window check: allow 5min before to 30min after slot time
+const now = new Date();
+const [h, m] = slot.time.split(':').map(Number);
+const slotStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m);
+const slotEnd = new Date(slotStart.getTime() + 30 * 60 * 1000);
+const graceStart = new Date(slotStart.getTime() - 5 * 60 * 1000);
+if (now < graceStart || now > slotEnd) {
+  return Astro.redirect('/learn/dashboard');
+}
+
+if (!slot.room_name) {
+  return Astro.redirect('/learn/dashboard?error=waiting');
+}
 
 const roomUrl = `https://${slot.room_name}.daily.co/${slot.room_name}`;
 ---

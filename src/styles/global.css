@@ -22,13 +22,13 @@
   --color-gold-light: #e8c46a;
   --color-ink: #1a1a1a;
   --color-body: #555555;
-  --color-muted: #888888;
+
   --color-hairline: #e8e4dc;
   --color-surface-soft: #f5f9f7;
   --color-surface-card: #fbf9f4;
   --color-surface-strong: #e8e4dc;
   --color-on-primary: #ffffff;
-  --color-on-gold: #ffffff;
+  --color-on-gold: #1a1a1a;
   --color-brand-accent: #d4a843;
   --color-success: #1b6b4a;
   --color-warning: #d4a843;
@@ -58,7 +58,7 @@
   --color-secondary: #f5f9f7;
   --color-secondary-foreground: #1a1a1a;
   --color-muted: #f5f9f7;
-  --color-muted-foreground: #888888;
+  --color-muted-foreground: #666666;
   --color-accent: #d4a843;
   --color-accent-foreground: #ffffff;
   --color-destructive: #dc2626;

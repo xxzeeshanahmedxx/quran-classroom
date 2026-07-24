@@ -3,6 +3,7 @@
 import SpotlightCard from './reactbits/SpotlightCard'
 import AssignDialog from './AssignDialog'
 import { useState, useEffect } from 'react'
+import { toast } from 'sonner'
 
 interface Slot {
   id: number
@@ -50,6 +51,22 @@ export default function SlotCards({ slots, students, todayStr }: SlotCardsProps)
     return () => clearInterval(id)
   }, [])
 
+  const handleDeleteSlot = async (slotId: number, time: string) => {
+    if (!window.confirm(`Delete slot at ${fmt12h(time)}? Students will be removed.`)) return
+    try {
+      const res = await fetch('/teach/slots/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: slotId }),
+      })
+      if (!res.ok) throw new Error('Failed')
+      toast.success('Slot deleted')
+      setTimeout(() => location.reload(), 800)
+    } catch {
+      toast.error('Failed to delete slot')
+    }
+  }
+
   if (slots.length === 0) {
     return (
       <div class="py-16 text-center">
@@ -92,7 +109,6 @@ export default function SlotCards({ slots, students, todayStr }: SlotCardsProps)
                   <AssignDialog
                     slotId={slot.id}
                     students={students.map(s => ({ id: s.id, name: s.name, title: s.title }))}
-                    currentCount={studentIdList.length}
                   />
                 )}
               </div>
@@ -102,7 +118,11 @@ export default function SlotCards({ slots, students, todayStr }: SlotCardsProps)
                     class="h-10 rounded-lg bg-primary px-5 text-sm font-semibold text-on-primary leading-10 hover:bg-primary-active hover-btn"
                   >Join</a>
                 ) : rem === 'Ended' ? (
-                  <span class="caption text-muted-foreground">Ended</span>
+                  <button
+                    type="button"
+                    class="caption text-error hover:underline"
+                    onClick={() => handleDeleteSlot(slot.id, slot.time)}
+                  >Delete</button>
                 ) : (
                   <span class="whitespace-nowrap rounded-full bg-surface-card px-2 py-0.5 caption text-muted-foreground">{rem}</span>
                 )}

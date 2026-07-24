@@ -4,19 +4,20 @@ import AddStudentDialog from '../../components/AddStudentDialog';
 import StudentCards from '../../components/StudentCards';
 import { getDb, getStudentsByTeacher, getTeacherById } from '../../lib/db';
 
-if (!Astro.locals.user || (Astro.locals.user.type !== 'teacher' && Astro.locals.user.type !== 'admin')) {
+if (!Astro.locals.user) {
+  return Astro.redirect('/teach/login?error=session');
+}
+if (Astro.locals.user.type !== 'teacher') {
   return Astro.redirect('/teach/login');
 }
 
-const db = getDb(Astro);
-const teacherId = Astro.locals.user.type === 'admin'
-  ? Number(Astro.url.searchParams.get('teacher_id') || '1')
-  : Astro.locals.user.id;
-
+const db = await getDb(Astro);
 const [students, teacher] = await Promise.all([
-  getStudentsByTeacher(db, teacherId),
-  getTeacherById(db, teacherId),
+  getStudentsByTeacher(db, 1),
+  getTeacherById(db, 1),
 ]);
+const error = Astro.url.searchParams.get('error');
+const errorMsg = error === 'max_students' ? 'Max 20 students reached' : error === 'invalid_title' ? 'Invalid title' : error === 'invalid_gender' ? 'Invalid gender' : error === 'invalid_name' ? 'Name is required' : null;
 ---
 
 <BaseLayout title="Students">
@@ -28,5 +29,7 @@ const [students, teacher] = await Promise.all([
     <AddStudentDialog client:load />
   </div>
 
-  <StudentCards client:load students={students.map(s => ({ id: s.id, name: s.name, title: s.title, pin: s.pin }))} teacherName={teacher?.name ?? 'Teacher'} />
+  {errorMsg && <p class="mb-4 text-sm text-error">{errorMsg}</p>}
+
+  <StudentCards client:load students={students.map(s => ({ id: s.id, name: s.name, title: s.title, gender: s.gender, pin: s.pin }))} teacherName={teacher?.name ?? 'Teacher'} />
 </BaseLayout>

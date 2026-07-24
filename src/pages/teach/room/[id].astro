@@ -3,13 +3,17 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getDb } from '../../../lib/db';
 import { createDailyRoom } from '../../../lib/daily';
 import { getEnv } from '../../../lib/env';
+import { todayPK } from '../../../lib/utils';
 
-if (!Astro.locals.user || (Astro.locals.user.type !== 'teacher' && Astro.locals.user.type !== 'admin')) {
+if (!Astro.locals.user) {
+  return Astro.redirect('/teach/login?error=session');
+}
+if (Astro.locals.user.type !== 'teacher') {
   return Astro.redirect('/teach/login');
 }
 
 const { id } = Astro.params;
-const db = getDb(Astro);
+const db = await getDb(Astro);
 const slot = await db.prepare('SELECT * FROM slots WHERE id = ?').bind(Number(id)).first<any>();
 
 function fmt12h(time24: string): string {
@@ -22,13 +26,23 @@ function fmt12h(time24: string): string {
 if (!slot) return Astro.redirect('/teach/dashboard');
 
 let roomUrl = '';
+let errorMsg = '';
 const apiKey = getEnv(Astro, 'DAILY_API_KEY');
 
 if (!slot.room_name) {
   const roomName = `quran-${slot.teacher_id}-${slot.date}-${slot.time.replace(':', '')}`;
-  roomUrl = await createDailyRoom(apiKey, roomName, 35);
-  await db.prepare("UPDATE slots SET room_name = ?, status = 'active' WHERE id = ?")
-    .bind(roomName, Number(id)).run();
+  try {
+    // Duration from slot start to now + 30min class
+    const [hSl, mSl] = slot.time.split(':').map(Number);
+    const slotDate = new Date(todayPK() + 'T' + slot.time);
+    const now = new Date();
+    const remainingSec = Math.max(30 * 60, Math.floor((slotDate.getTime() + 30 * 60 * 1000 - now.getTime()) / 1000));
+    roomUrl = await createDailyRoom(apiKey, roomName, Math.ceil(remainingSec / 60));
+    await db.prepare("UPDATE slots SET room_name = ?, status = 'active' WHERE id = ?")
+      .bind(roomName, Number(id)).run();
+  } catch (e: any) {
+    errorMsg = e.message || 'Failed to create classroom. Check Daily.co API key.';
+  }
 } else {
   roomUrl = `https://${slot.room_name}.daily.co/${slot.room_name}`;
 }
@@ -40,12 +54,20 @@ if (!slot.room_name) {
       <h2 class="title-sm text-ink">Classroom — {fmt12h(slot.time)}</h2>
       <a href="/teach/dashboard" class="body-sm text-muted-foreground hover:text-ink">← Back</a>
     </div>
-    <div class="aspect-video rounded-xl border border-hairline bg-surface-soft">
-      <iframe
-        src={roomUrl}
-        class="h-full w-full rounded-lg"
-        allow="camera; microphone; fullscreen"
-      ></iframe>
-    </div>
+    {errorMsg ? (
+      <div class="rounded-xl border border-error/30 bg-error/5 p-8 text-center">
+        <p class="text-error font-semibold">Could not create classroom</p>
+        <p class="mt-2 text-sm text-body">{errorMsg}</p>
+        <a href="/teach/dashboard" class="mt-4 inline-block h-10 rounded-lg bg-primary px-5 text-sm font-semibold text-on-primary leading-10 hover:bg-primary-dark">Back to Dashboard</a>
+      </div>
+    ) : (
+      <div class="aspect-video rounded-xl border border-hairline bg-surface-soft">
+        <iframe
+          src={roomUrl}
+          class="h-full w-full rounded-lg"
+          allow="camera; microphone; fullscreen"
+        ></iframe>
+      </div>
+    )}
   </div>
 </BaseLayout>

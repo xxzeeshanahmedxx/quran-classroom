@@ -15,6 +15,7 @@ export default function AddStudentDialog() {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState("")
   const [title, setTitle] = useState("Nazra")
+  const [gender, setGender] = useState("male")
   const [saving, setSaving] = useState(false)
 
   const save = async () => {
@@ -24,13 +25,14 @@ export default function AddStudentDialog() {
       const res = await fetch('/teach/students/add', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ name, title }),
+        body: new URLSearchParams({ name, title, gender }),
       })
       if (!res.ok) throw new Error('Failed')
       toast.success('Student added')
       setOpen(false)
       setName("")
       setTitle("Nazra")
+      setGender("male")
       setTimeout(() => location.reload(), 800)
     } catch {
       toast.error('Failed to add student')
@@ -58,12 +60,21 @@ export default function AddStudentDialog() {
             required
           />
           <select
+            value={gender}
+            onChange={e => setGender(e.target.value)}
+            className="h-10 rounded-lg border border-hairline bg-canvas px-3.5 py-2.5 text-sm text-ink"
+          >
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+          <select
             value={title}
             onChange={e => setTitle(e.target.value)}
             className="h-10 rounded-lg border border-hairline bg-canvas px-3.5 py-2.5 text-sm text-ink"
           >
             <option value="Nazra">Nazra</option>
             <option value="Hifz">Hifz</option>
+            <option value="Tajweed">Tajweed</option>
           </select>
         </div>
         <div className="flex justify-end gap-2 pt-2 border-t border-hairline">

@@ -11,7 +11,11 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 
-export default function AddSlotDialog() {
+interface AddSlotDialogProps {
+  teacherId?: number
+}
+
+export default function AddSlotDialog({ teacherId }: AddSlotDialogProps) {
   const [open, setOpen] = useState(false)
   const [time, setTime] = useState("")
   const [saving, setSaving] = useState(false)
@@ -20,12 +24,14 @@ export default function AddSlotDialog() {
     if (!time) return
     setSaving(true)
     try {
+      const params: Record<string, string> = { time }
+      if (teacherId) params.teacher_id = String(teacherId)
       const res = await fetch('/teach/slots/add', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ time }),
+        body: new URLSearchParams(params),
       })
-      if (!res.ok) throw new Error('Failed')
+      if (!res.ok) throw new Error((await res.text()) || 'Failed')
       toast.success('Slot added')
       setOpen(false)
       setTime("")
