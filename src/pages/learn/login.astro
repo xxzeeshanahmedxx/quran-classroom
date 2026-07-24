@@ -1,0 +1,28 @@
+---
+import AuthLayout from '../../layouts/AuthLayout.astro';
+import PinPad from '../../components/PinPad.astro';
+import { authenticateStudent, createSession } from '../../lib/auth';
+
+if (Astro.locals.user?.type === 'student') {
+  return Astro.redirect('/learn/dashboard');
+}
+
+if (Astro.request.method === 'POST') {
+  const formData = await Astro.request.formData();
+  const pin = formData.get('pin') as string;
+  const user = await authenticateStudent(Astro, pin);
+  if (!user) {
+    return Astro.redirect('/learn/login?error=invalid');
+  }
+  createSession(Astro, user);
+  return Astro.redirect('/learn/dashboard');
+}
+
+const error = Astro.url.searchParams.get('error');
+---
+
+<AuthLayout title="Student Login">
+  <form method="POST" action="/learn/login" class="flex flex-col items-center gap-4">
+    <PinPad label="Log In" action="/learn/login" error={error === 'invalid' ? 'Wrong PIN. Ask your teacher.' : undefined} />
+  </form>
+</AuthLayout>

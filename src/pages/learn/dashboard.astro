@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getDb, getTeacherById, getSlotsByTeacherDate } from '../../lib/db';
+
+if (!Astro.locals.user || Astro.locals.user.type !== 'student') {
+  return Astro.redirect('/learn/login');
+}
+
+const db = getDb(Astro);
+const { id: studentId, name, teacherId = 1 } = Astro.locals.user;
+const today = new Date().toISOString().slice(0, 10);
+
+const [slots, teacher] = await Promise.all([
+  getSlotsByTeacherDate(db, teacherId, today),
+  getTeacherById(db, teacherId),
+]);
+
+const mySlot = slots.find(slot => {
+  const ids: number[] = JSON.parse(slot.student_ids);
+  return ids.includes(studentId);
+});
+
+const isNow = mySlot ? (() => {
+  const now = new Date();
+  const [h, m] = mySlot.time.split(':').map(Number);
+  const slotStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m);
+  const slotEnd = new Date(slotStart.getTime() + 30 * 60 * 1000);
+  return now >= slotStart && now <= slotEnd;
+})() : false;
+---
+
+<BaseLayout title="My Class">
+  <div class="flex flex-col items-center py-12">
+    <h2 class="text-lg font-medium text-gray-500">Assalamu Alaikum</h2>
+    <h1 class="mt-1 text-2xl font-semibold">{name}</h1>
+
+    {mySlot ? (
+      <div class="mt-8 w-full max-w-sm rounded-xl border border-gray-200 bg-white p-6 text-center">
+        <p class="text-sm text-gray-500">
+          Your next class with
+          <span class="font-medium text-gray-900">{teacher?.name ?? 'your teacher'}</span>
+        </p>
+        <p class="mt-2 text-3xl font-bold tracking-tight">{mySlot.time}</p>
+        {isNow ? (
+          <a
+            href={`/learn/room/${mySlot.id}`}
+            class="mt-6 inline-block rounded-lg bg-green-600 px-8 py-3 text-sm font-medium text-white hover:bg-green-700"
+          >
+            Join Class
+          </a>
+        ) : (
+          <p class="mt-6 text-sm text-gray-400">Come back at your scheduled time</p>
+        )}
+      </div>
+    ) : (
+      <div class="mt-8 w-full max-w-sm rounded-xl border-2 border-dashed border-gray-200 py-12 text-center">
+        <p class="text-gray-400">No class scheduled for today</p>
+      </div>
+    )}
+  </div>
+</BaseLayout>

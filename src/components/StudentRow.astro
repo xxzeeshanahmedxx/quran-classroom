@@ -1,0 +1,25 @@
+---
+export interface Props {
+  id: number;
+  name: string;
+  title: string;
+  pin: string;
+}
+
+const { id, name, title, pin } = Astro.props;
+---
+
+<tr class="border-b border-gray-100 text-sm">
+  <td class="py-2">{name}</td>
+  <td class="py-2">{title}</td>
+  <td class="py-2 font-mono text-gray-400">{pin}</td>
+  <td class="py-2 text-right">
+    <button
+      type="button"
+      class="text-red-500 hover:text-red-700"
+      data-delete-student={id}
+    >
+      Remove
+    </button>
+  </td>
+</tr>
