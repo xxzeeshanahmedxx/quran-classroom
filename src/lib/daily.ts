@@ -12,6 +12,11 @@ export async function createDailyRoom(apiKey: string, roomName: string, duration
         max_participants: 4,
         exp: Math.floor(Date.now() / 1000) + durationMinutes * 60,
         enable_screenshare: true,
+        eject_at_room_exp: true,
+        enable_chat: true,
+        enable_hand_raising: true,
+        start_audio_off: true,
+        enable_prejoin_ui: true,
       },
     }),
   });

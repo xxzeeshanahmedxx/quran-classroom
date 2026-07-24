@@ -23,6 +23,8 @@ export interface Slot {
   status: string;
 }
 
+import { env as cfEnv } from 'cloudflare:workers';
+
 interface DB {
   prepare(sql: string): {
     bind(...args: any[]): {
@@ -33,9 +35,9 @@ interface DB {
   };
 }
 
-function getDB(context: any): DB {
-  if (context.locals?.runtime?.env?.DB) {
-    return context.locals.runtime.env.DB;
+function getDB(_context: any): DB {
+  if ((cfEnv as any)?.DB) {
+    return (cfEnv as any).DB;
   }
   return createMockDB();
 }

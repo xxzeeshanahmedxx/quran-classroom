@@ -1,6 +1,7 @@
 ---
 import AuthLayout from '../../layouts/AuthLayout.astro';
 import PinPad from '../../components/PinPad.astro';
+import ClickSparkForm from '../../components/ClickSparkForm';
 import { authenticateStudent, createSession } from '../../lib/auth';
 
 if (Astro.locals.user?.type === 'student') {
@@ -22,7 +23,9 @@ const error = Astro.url.searchParams.get('error');
 ---
 
 <AuthLayout title="Student Login">
-  <form method="POST" action="/learn/login" class="flex flex-col items-center gap-4">
-    <PinPad label="Log In" action="/learn/login" error={error === 'invalid' ? 'Wrong PIN. Ask your teacher.' : undefined} />
-  </form>
+  <ClickSparkForm client:load>
+    <form method="POST" action="/learn/login" class="flex flex-col items-center gap-4">
+      <PinPad label="Log In" action="/learn/login" error={error === 'invalid' ? 'Wrong PIN. Ask your teacher.' : undefined} />
+    </form>
+  </ClickSparkForm>
 </AuthLayout>

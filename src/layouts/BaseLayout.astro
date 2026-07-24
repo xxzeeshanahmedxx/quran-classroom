@@ -1,4 +1,7 @@
 ---
+import '../styles/global.css';
+import { Toaster } from '../components/ui/sonner';
+
 export interface Props {
   title: string;
 }
@@ -8,29 +11,32 @@ const user = Astro.locals.user;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title} | Quran Classroom</title>
-    <link rel="stylesheet" href="/src/styles/global.css" />
+    <meta name="description" content="Live Quran Academy — live online Quran classes for kids and adults. Small groups, experienced teachers, personal attention at livequran.academy." />
+    <title>{title} | Live Quran Academy</title>
   </head>
-  <body class="min-h-screen bg-gray-50 text-gray-900 font-sans">
-    <header class="border-b border-gray-200 bg-white px-4 py-3">
-      <div class="mx-auto flex max-w-4xl items-center justify-between">
-        <a href="/" class="text-lg font-semibold">Quran Classroom</a>
-        <nav class="flex items-center gap-4 text-sm">
-          {user && (
-            <>
-              <span class="text-gray-500">{user.name}</span>
-              <a href="/logout" class="text-gray-400 hover:text-gray-600">Logout</a>
-            </>
-          )}
-        </nav>
+  <body class="min-h-screen font-sans text-body">
+    <div class="mx-auto w-full max-w-4xl px-4 py-6 sm:py-10">
+      <div class="page-card rounded-xl">
+        <header class="flex h-16 items-center justify-between border-b border-hairline px-6">
+          <a href="/" class="text-sm font-semibold text-ink hover-link">Live Quran Academy</a>
+          <nav class="flex items-center gap-4 text-sm">
+            {user && (
+              <>
+                <span class="text-muted-foreground">{user.name}</span>
+                <a href="/logout" class="text-muted-foreground hover-link">Logout</a>
+              </>
+            )}
+          </nav>
+        </header>
+        <main class="p-6">
+          <slot />
+        </main>
       </div>
-    </header>
-    <main class="mx-auto max-w-4xl px-4 py-8">
-      <slot />
-    </main>
+    </div>
+    <Toaster client:load />
   </body>
 </html>

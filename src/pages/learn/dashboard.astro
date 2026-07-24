@@ -8,12 +8,20 @@ if (!Astro.locals.user || Astro.locals.user.type !== 'student') {
 
 const db = getDb(Astro);
 const { id: studentId, name, teacherId = 1 } = Astro.locals.user;
-const today = new Date().toISOString().slice(0, 10);
+const now = new Date();
+const todayStr = now.toISOString().slice(0, 10);
 
 const [slots, teacher] = await Promise.all([
-  getSlotsByTeacherDate(db, teacherId, today),
+  getSlotsByTeacherDate(db, teacherId, todayStr),
   getTeacherById(db, teacherId),
 ]);
+
+function fmt12h(time24: string): string {
+  const [h, m] = time24.split(':').map(Number);
+  const period = h >= 12 ? 'PM' : 'AM';
+  const h12 = h % 12 || 12;
+  return `${h12}:${m.toString().padStart(2, '0')} ${period}`;
+}
 
 const mySlot = slots.find(slot => {
   const ids: number[] = JSON.parse(slot.student_ids);
@@ -21,7 +29,6 @@ const mySlot = slots.find(slot => {
 });
 
 const isNow = mySlot ? (() => {
-  const now = new Date();
   const [h, m] = mySlot.time.split(':').map(Number);
   const slotStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m);
   const slotEnd = new Date(slotStart.getTime() + 30 * 60 * 1000);
@@ -30,31 +37,28 @@ const isNow = mySlot ? (() => {
 ---
 
 <BaseLayout title="My Class">
-  <div class="flex flex-col items-center py-12">
-    <h2 class="text-lg font-medium text-gray-500">Assalamu Alaikum</h2>
-    <h1 class="mt-1 text-2xl font-semibold">{name}</h1>
+  <div class="flex flex-col items-center py-16">
+    <h2 class="body-md text-muted-foreground">Assalamu Alaikum</h2>
+    <h1 class="mt-1 display-sm text-ink">{name}</h1>
 
     {mySlot ? (
-      <div class="mt-8 w-full max-w-sm rounded-xl border border-gray-200 bg-white p-6 text-center">
-        <p class="text-sm text-gray-500">
+      <div class="mt-8 flex w-full max-w-sm flex-col items-center gap-6 rounded-xl border border-hairline bg-surface-card p-8 text-center hover-card">
+        <p class="body-sm text-muted-foreground">
           Your next class with
-          <span class="font-medium text-gray-900">{teacher?.name ?? 'your teacher'}</span>
+          <span class="font-semibold text-ink">{teacher?.name ?? 'your teacher'}</span>
         </p>
-        <p class="mt-2 text-3xl font-bold tracking-tight">{mySlot.time}</p>
+        <span class="display-sm text-ink">{fmt12h(mySlot.time)}</span>
         {isNow ? (
-          <a
-            href={`/learn/room/${mySlot.id}`}
-            class="mt-6 inline-block rounded-lg bg-green-600 px-8 py-3 text-sm font-medium text-white hover:bg-green-700"
-          >
-            Join Class
-          </a>
+          <a href={`/learn/room/${mySlot.id}`}
+            class="h-10 w-full rounded-lg bg-primary px-5 text-sm font-semibold text-on-primary text-center leading-10 hover:bg-primary-active hover-btn"
+          >Join Class</a>
         ) : (
-          <p class="mt-6 text-sm text-gray-400">Come back at your scheduled time</p>
+          <span class="body-sm text-muted-foreground">Come back at your scheduled time</span>
         )}
       </div>
     ) : (
-      <div class="mt-8 w-full max-w-sm rounded-xl border-2 border-dashed border-gray-200 py-12 text-center">
-        <p class="text-gray-400">No class scheduled for today</p>
+      <div class="mt-8 py-16 text-center">
+        <p class="body-md text-muted-foreground">No class scheduled for today</p>
       </div>
     )}
   </div>

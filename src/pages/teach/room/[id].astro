@@ -12,6 +12,13 @@ const { id } = Astro.params;
 const db = getDb(Astro);
 const slot = await db.prepare('SELECT * FROM slots WHERE id = ?').bind(Number(id)).first<any>();
 
+function fmt12h(time24: string): string {
+  const [h, m] = time24.split(':').map(Number);
+  const period = h >= 12 ? 'PM' : 'AM';
+  const h12 = h % 12 || 12;
+  return `${h12}:${m.toString().padStart(2, '0')} ${period}`;
+}
+
 if (!slot) return Astro.redirect('/teach/dashboard');
 
 let roomUrl = '';
@@ -30,13 +37,13 @@ if (!slot.room_name) {
 <BaseLayout title="Classroom">
   <div class="flex flex-col gap-4">
     <div class="flex items-center justify-between">
-      <h2 class="text-lg font-semibold">Classroom — {slot.time}</h2>
-      <a href="/teach/dashboard" class="text-sm text-gray-500 hover:text-gray-700">← Back</a>
+      <h2 class="title-sm text-ink">Classroom — {fmt12h(slot.time)}</h2>
+      <a href="/teach/dashboard" class="body-sm text-muted-foreground hover:text-ink">← Back</a>
     </div>
-    <div class="aspect-video rounded-xl border border-gray-200 bg-gray-100">
+    <div class="aspect-video rounded-xl border border-hairline bg-surface-soft">
       <iframe
         src={roomUrl}
-        class="h-full w-full rounded-xl"
+        class="h-full w-full rounded-lg"
         allow="camera; microphone; fullscreen"
       ></iframe>
     </div>

@@ -1,6 +1,5 @@
-export function getEnv(context: any, key: string): string {
-  if (context.locals?.runtime?.env?.[key]) {
-    return context.locals.runtime.env[key];
-  }
-  return process.env[key] || '';
+import { env as cfEnv } from 'cloudflare:workers';
+
+export function getEnv(_context: any, key: string): string {
+  return (cfEnv as any)[key] || process.env[key] || '';
 }
