@@ -3,10 +3,12 @@
 ## Overview
 A simple scheduling + video classroom platform for a Quran teacher. One teacher manages up to 10 students, teaches 3 students per slot. Sessions run on Daily.co video. Built with Astro + Tailwind CSS 4 on Cloudflare Pages + D1.
 
-## Sites
-- `teach.example.com` — Teacher dashboard (manage schedule, students)
-- `example.com` — Marketing landing page
-- `learn.example.com` — Student portal (see next class, join video)
+## Sites (single domain)
+All under `example.com`:
+- `/` — Marketing landing page
+- `/teach` — Teacher dashboard (manage schedule, students)
+- `/learn` — Student portal (see next class, join video)
+- `/admin` — Admin panel
 
 ## Tech Stack
 - **Framework:** Astro (latest) SSR with `@astrojs/cloudflare` adapter
