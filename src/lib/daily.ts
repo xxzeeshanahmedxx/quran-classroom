@@ -15,6 +15,9 @@ export async function createDailyRoom(apiKey: string, roomName: string, duration
         eject_at_room_exp: true,
         enable_chat: true,
         enable_hand_raising: true,
+        enable_emoji_reactions: true,
+        enable_people_ui: true,
+        enable_noise_cancellation_ui: true,
         start_audio_off: true,
         enable_prejoin_ui: true,
       },
@@ -28,4 +31,31 @@ export async function createDailyRoom(apiKey: string, roomName: string, duration
 
   const data = await response.json() as any;
   return data.url;
+}
+
+export async function createDailyToken(apiKey: string, roomName: string, userName: string, isOwner: boolean): Promise<string> {
+  const response = await fetch('https://api.daily.co/v1/meeting-tokens', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      properties: {
+        room_name: roomName,
+        user_name: userName,
+        is_owner: isOwner,
+        start_audio_off: !isOwner,
+        start_video_off: false,
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Daily.co token error: ${response.status} ${error}`);
+  }
+
+  const data = await response.json() as any;
+  return data.token;
 }

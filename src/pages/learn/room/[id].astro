@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getDb } from '../../../lib/db';
+import { getDb, getStudentById } from '../../../lib/db';
+import { createDailyToken } from '../../../lib/daily';
+import { getEnv } from '../../../lib/env';
 
 if (!Astro.locals.user) {
   return Astro.redirect('/learn/login?error=session');
@@ -35,7 +37,20 @@ if (!slot.room_name) {
   return Astro.redirect('/learn/dashboard?error=waiting');
 }
 
-const roomUrl = `https://${slot.room_name}.daily.co/${slot.room_name}`;
+const apiKey = getEnv(Astro, 'DAILY_API_KEY');
+const studentRecord = await getStudentById(db, Astro.locals.user.id);
+
+let roomUrl = `https://${slot.room_name}.daily.co/${slot.room_name}`;
+
+// Create a token so student's name shows in the room
+if (apiKey && studentRecord) {
+  try {
+    const token = await createDailyToken(apiKey, slot.room_name, studentRecord.name, false);
+    roomUrl = `${roomUrl}?t=${token}`;
+  } catch {
+    // Token failed — fall back to public room URL (still works)
+  }
+}
 ---
 
 <BaseLayout title="Classroom">

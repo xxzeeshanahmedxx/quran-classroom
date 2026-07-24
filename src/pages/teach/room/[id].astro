@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getDb } from '../../../lib/db';
-import { createDailyRoom } from '../../../lib/daily';
+import { createDailyRoom, createDailyToken } from '../../../lib/daily';
 import { getEnv } from '../../../lib/env';
+import { getSchoolConfig } from '../../../lib/config';
 import { todayPK } from '../../../lib/utils';
 
 if (!Astro.locals.user) {
@@ -28,16 +29,19 @@ if (!slot) return Astro.redirect('/teach/dashboard');
 let roomUrl = '';
 let errorMsg = '';
 const apiKey = getEnv(Astro, 'DAILY_API_KEY');
+const config = getSchoolConfig(Astro);
 
 if (!slot.room_name) {
   const roomName = `quran-${slot.teacher_id}-${slot.date}-${slot.time.replace(':', '')}`;
   try {
-    // Duration from slot start to now + 30min class
     const [hSl, mSl] = slot.time.split(':').map(Number);
     const slotDate = new Date(todayPK() + 'T' + slot.time);
     const now = new Date();
     const remainingSec = Math.max(30 * 60, Math.floor((slotDate.getTime() + 30 * 60 * 1000 - now.getTime()) / 1000));
-    roomUrl = await createDailyRoom(apiKey, roomName, Math.ceil(remainingSec / 60));
+    const baseUrl = await createDailyRoom(apiKey, roomName, Math.ceil(remainingSec / 60));
+    // Create owner token so teacher can mute/unmute students
+    const token = await createDailyToken(apiKey, roomName, config.teacherName, true);
+    roomUrl = `${baseUrl}?t=${token}`;
     await db.prepare("UPDATE slots SET room_name = ?, status = 'active' WHERE id = ?")
       .bind(roomName, Number(id)).run();
   } catch (e: any) {
