@@ -19,24 +19,24 @@ const user = Astro.locals.user;
     <title>{title} | Live Quran Academy</title>
   </head>
   <body class="min-h-screen font-sans text-body">
-    <div class="mx-auto w-full max-w-4xl px-4 py-6 sm:py-10">
-      <div class="page-card rounded-xl">
-        <header class="flex h-16 items-center justify-between border-b border-hairline px-6">
-          <a href="/" class="text-sm font-semibold text-ink hover-link">Live Quran Academy</a>
-          <nav class="flex items-center gap-4 text-sm">
-            {user && (
-              <>
-                <span class="text-muted-foreground">{user.name}</span>
-                <a href="/logout" class="text-muted-foreground hover-link">Logout</a>
-              </>
-            )}
-          </nav>
-        </header>
-        <main class="p-6">
-          <slot />
-        </main>
+    <header class="sticky top-0 z-50 border-b border-hairline bg-surface-card">
+      <div class="mx-auto flex h-16 max-w-4xl items-center justify-between px-4 sm:px-6">
+        <a href="/" class="text-sm font-semibold text-ink hover-link">Live Quran Academy</a>
+        <nav class="flex items-center gap-4 text-sm">
+          {user && (
+            <>
+              <span class="text-muted-foreground">{user.name}</span>
+              <a href="/logout" class="text-muted-foreground hover-link">Logout</a>
+            </>
+          )}
+        </nav>
       </div>
-    </div>
+    </header>
+    <main class="mx-auto w-full max-w-4xl px-4 py-6 sm:py-10">
+      <div class="page-card rounded-xl p-6">
+        <slot />
+      </div>
+    </main>
     <Toaster client:load />
   </body>
 </html>
